@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// This is core for DB
 const dataSource = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 
 var DB *gorm.DB
