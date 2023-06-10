@@ -2,8 +2,8 @@ package Busroute
 
 import (
 	"fmt"
-	"oasaLibDb/oasaSyncDb"
-	"oasaLibDb/oasaSyncModel"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncDb"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
 )
 
 func SelectByRouteCode(routeCode int32) *oasaSyncModel.BusRoute {

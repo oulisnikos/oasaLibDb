@@ -2,7 +2,7 @@ package oasaSyncDb
 
 import (
 	"fmt"
-	"oasaLibDb/oasaSyncModel"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
 )
 
 func SequenceGetNextVal(seq_name string) int64 {

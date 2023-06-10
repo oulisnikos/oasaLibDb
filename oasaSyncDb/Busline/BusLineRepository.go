@@ -2,8 +2,8 @@ package Busline
 
 import (
 	"fmt"
-	"oasaLibDb/oasaSyncDb"
-	"oasaLibDb/oasaSyncModel"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncDb"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
 )
 
 const erroMessageTemplate = "Field validation for [%s] failed on the [%s] tag"
