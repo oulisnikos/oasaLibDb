@@ -1,4 +1,4 @@
-module oasaLibDb
+module github.com/oulisnikos/oasaLibDb
 
 go 1.20
 
