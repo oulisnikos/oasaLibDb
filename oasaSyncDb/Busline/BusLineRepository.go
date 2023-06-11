@@ -23,7 +23,7 @@ func SelectByLineCode(line_code int64) *oasaSyncModel.Busline {
 			return nil
 		}
 		if r.RowsAffected == 0 {
-			fmt.Printf("Bus Line Not Found [line_code: %d]", line_code)
+			fmt.Printf("Bus Line Not Found [line_code: %d].\n", line_code)
 			return nil
 		}
 	}

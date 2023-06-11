@@ -15,7 +15,7 @@ func SelectByRouteCode(routeCode int32) *oasaSyncModel.BusRoute {
 			return nil
 		}
 		if r.RowsAffected == 0 {
-			fmt.Printf("Bus Route Not Found [route_code: %d].", routeCode)
+			fmt.Printf("Bus Route Not Found [route_code: %d].\n", routeCode)
 			return nil
 		}
 	}
