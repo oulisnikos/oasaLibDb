@@ -8,7 +8,9 @@ import (
 
 func SelectByStopCode(stopCode int64) *oasaSyncModel.BusStop {
 	var selectedVal oasaSyncModel.BusStop
-	r := oasaSyncDb.DB.Table("BUSSTOP").Where("stop_code = ?", stopCode).Find(&selectedVal)
+	r0 := oasaSyncDb.DB.Table("BUSSTOP")
+	r1 := r0.Where("stop_code = ?", stopCode)
+	r := r1.Find(&selectedVal)
 	if r != nil {
 		if r.Error != nil {
 			fmt.Println(r.Error.Error())
