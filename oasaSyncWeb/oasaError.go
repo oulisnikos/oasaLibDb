@@ -5,12 +5,12 @@ import "fmt"
 type OasaError struct {
 	Error_Code  int32
 	Error_Descr string
+	Retry       bool
 }
 
 type OasaResponse struct {
 	Error *OasaError
 	Data  interface{}
-	Retry bool
 }
 
 func (e OasaError) Error() string {

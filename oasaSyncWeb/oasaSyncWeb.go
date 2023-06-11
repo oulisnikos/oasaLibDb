@@ -67,9 +67,7 @@ func MakeRequest(action string) (string, error) {
 }
 
 func OasaRequestApi(action string, extraParams map[string]interface{}) *OasaResponse {
-	var oasaResult OasaResponse = OasaResponse{
-		Retry: false,
-	}
+	var oasaResult OasaResponse = OasaResponse{}
 	var extraparamUrl string = ""
 	// keys := make([]int, len(extraParams))
 	for k := range extraParams {
@@ -82,6 +80,7 @@ func OasaRequestApi(action string, extraParams map[string]interface{}) *OasaResp
 		oasaResult.Error = &OasaError{
 			Error_Code:  123,
 			Error_Descr: err.Error(),
+			Retry:       false,
 		}
 		return &oasaResult
 	}
@@ -91,6 +90,7 @@ func OasaRequestApi(action string, extraParams map[string]interface{}) *OasaResp
 		oasaResult.Error = &OasaError{
 			Error_Code:  124, //on Reading Response Body
 			Error_Descr: err.Error(),
+			Retry:       false,
 		}
 		return &oasaResult
 	}
@@ -101,8 +101,8 @@ func OasaRequestApi(action string, extraParams map[string]interface{}) *OasaResp
 		oasaResult.Error = &OasaError{
 			Error_Code:  125, //on 5xx http Error Response
 			Error_Descr: fmt.Sprintf("Internal Error Oasa Server (%s)", bytes.NewBuffer(result)),
+			Retry:       true,
 		}
-		oasaResult.Retry = true
 		return &oasaResult
 	}
 
