@@ -2,12 +2,11 @@ package oasaSyncApi
 
 import (
 	"fmt"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncDecode"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncMapper"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncWeb"
 	"os"
-
-	oasa_sync_decode "github.com/oulisnikos/oasaPlugin/oasaSyncDecode"
-	oasa_sync_mapper "github.com/oulisnikos/oasaPlugin/oasaSyncMapper"
-	oasa_sync_model "github.com/oulisnikos/oasaPlugin/oasaSyncModel"
-	oasaSyncWeb "github.com/oulisnikos/oasaPlugin/oasaSyncWeb"
 )
 
 type apierror interface {
@@ -33,7 +32,7 @@ func GetData(path string) ([]map[string]interface{}, error) {
 		return nil, error
 	}
 	defer file.Close()
-	result = oasa_sync_decode.ReadTextCharByChar(responseStr, nil, file)
+	result = oasaSyncDecode.ReadTextCharByChar(responseStr, nil, file)
 
 	if len(result) == 0 {
 		result = append(result, map[string]interface{}{
@@ -186,22 +185,22 @@ func GetData(path string) ([]map[string]interface{}, error) {
 // }
 
 // This function call OASA Server to get all information about Bus Lines and store in general Interface{}
-func GetBusLinesTest() ([]oasa_sync_model.Busline, *oasaSyncWeb.OasaError) {
-	var result []oasa_sync_model.Busline
+func GetBusLinesTest() ([]oasaSyncModel.Busline, *oasaSyncWeb.OasaError) {
+	var result []oasaSyncModel.Busline
 	response := oasaSyncWeb.OasaRequestApi("webGetLinesWithMLInfo", nil)
 	if response.Error != nil {
 		return nil, response.Error
 	}
 
 	for _, record := range response.Data.([]interface{}) {
-		result = append(result, oasa_sync_mapper.BussLineMapper(record.(map[string]interface{})))
+		result = append(result, oasaSyncMapper.BussLineMapper(record.(map[string]interface{})))
 	}
 
 	return result, nil
 }
 
-func GetBusRoutes(lined_id int32) ([]oasa_sync_model.BusRoute, *oasaSyncWeb.OasaError) {
-	var result []oasa_sync_model.BusRoute
+func GetBusRoutes(lined_id int32) ([]oasaSyncModel.BusRoute, *oasaSyncWeb.OasaError) {
+	var result []oasaSyncModel.BusRoute
 	response := oasaSyncWeb.OasaRequestApi("webGetRoutes", map[string]interface{}{"p1": lined_id})
 	if response.Error != nil {
 		return nil, response.Error
@@ -209,7 +208,7 @@ func GetBusRoutes(lined_id int32) ([]oasa_sync_model.BusRoute, *oasaSyncWeb.Oasa
 
 	for _, record := range response.Data.([]interface{}) {
 		// fmt.Println("at Index Route ", index)
-		result = append(result, oasa_sync_mapper.BusRouteMapper(record.(map[string]interface{})))
+		result = append(result, oasaSyncMapper.BusRouteMapper(record.(map[string]interface{})))
 	}
 	fmt.Printf("Routes results %d \n", len(result))
 
