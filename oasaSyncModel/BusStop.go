@@ -2,7 +2,8 @@ package oasaSyncModel
 
 type BusStop struct {
 	Id               int64       `json:"Id" gorm:"primaryKey"`
-	Stop_code        int64       `json:"StopCode"`
+	Route_code       int64       `json:"RouteCode" gorm:"index:ROUTE_CODE_INDX"`
+	Stop_code        int64       `json:"StopCode" gorm:"index:STOP_CODE_UN,unique"`
 	Stop_id          string      `json:"StopID"`
 	Stop_descr       string      `json:"StopDescr"`
 	Stop_descr_eng   string      `json:"StopDescrEng"`

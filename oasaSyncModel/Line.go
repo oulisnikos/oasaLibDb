@@ -27,7 +27,7 @@ type Busline struct {
 	Id             int64  `gorm:"primaryKey"`
 	Ml_code        int16  `json:"ml_code"`
 	Sdc_code       int16  `json:"sdc_code"`
-	Line_code      int32  `json:"line_code" validate:"required" gorm:"index"`
+	Line_code      int32  `json:"line_code" validate:"required" gorm:"index:LINE_CODE,unique"`
 	Line_id        string `json:"line_id"`
 	Line_descr     string `json:"line_descr" validate:"required,min=2,max=5"`
 	Line_descr_eng string `json:"line_descr_eng" validate:"required,min=2,max=5"`
