@@ -13,17 +13,17 @@ type OpswValidateError struct {
 	Message string
 }
 
-func SelectByLineCode(id int64) *oasaSyncModel.Busline {
+func SelectByLineCode(line_code int64) *oasaSyncModel.Busline {
 	//var selectedPtr *oasaSyncModel.Busline
 	var selectedVal oasaSyncModel.Busline
-	r := oasaSyncDb.DB.Table("BUSLINE").Where("line_code = ?", id).Find(&selectedVal)
+	r := oasaSyncDb.DB.Table("BUSLINE").Where("line_code = ?", line_code).Find(&selectedVal)
 	if r != nil {
 		if r.Error != nil {
 			fmt.Println(r.Error.Error())
 			return nil
 		}
 		if r.RowsAffected == 0 {
-			fmt.Println("Record does not exist!!!")
+			fmt.Printf("Bus Line Not Found [line_code: %d]", line_code)
 			return nil
 		}
 	}
@@ -60,10 +60,10 @@ func BuslineList01() []oasaSyncModel.Busline {
 			fmt.Println(r.Error.Error())
 			return nil
 		}
-		if r.RowsAffected == 0 {
-			fmt.Println("Record does not exist!!!")
-			return nil
-		}
+		//if r.RowsAffected == 0 {
+		//	fmt.Println("Record does not exist!!!")
+		//	return nil
+		//}
 	}
 	return result
 }

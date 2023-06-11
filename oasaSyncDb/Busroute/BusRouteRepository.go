@@ -15,7 +15,7 @@ func SelectByRouteCode(routeCode int32) *oasaSyncModel.BusRoute {
 			return nil
 		}
 		if r.RowsAffected == 0 {
-			fmt.Println("Record does not exist!!!")
+			fmt.Printf("Bus Route Not Found [route_code: %d].", routeCode)
 			return nil
 		}
 	}
@@ -30,10 +30,10 @@ func SelectRouteByLineCode(line_code int32) []oasaSyncModel.BusRoute {
 			fmt.Println(r.Error.Error())
 			return nil
 		}
-		if r.RowsAffected == 0 {
-			fmt.Println("Record does not exist!!!")
-			return nil
-		}
+		//if r.RowsAffected == 0 {
+		//	fmt.Println("Bus Routes Not Found [li: %d].")
+		//	return nil
+		//}
 	}
 	return selectedVal
 }
@@ -68,10 +68,10 @@ func BusRouteList01() []oasaSyncModel.BusRoute {
 			fmt.Println(r.Error.Error())
 			return nil
 		}
-		if r.RowsAffected == 0 {
-			fmt.Println("Record does not exist!!!")
-			return nil
-		}
+		//if r.RowsAffected == 0 {
+		//	fmt.Println("Record does not exist!!!")
+		//	return nil
+		//}
 	}
 	return result
 }

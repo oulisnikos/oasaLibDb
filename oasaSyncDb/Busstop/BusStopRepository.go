@@ -15,7 +15,6 @@ func SelectByStopCode(stopCode int64) *oasaSyncModel.BusStop {
 			return nil
 		}
 		if r.RowsAffected == 0 {
-			fmt.Println("Record does not exist!!!")
 			return nil
 		}
 	}
@@ -26,6 +25,7 @@ func Save(input oasaSyncModel.BusStop) {
 	selectedBusStop := SelectByStopCode(input.Stop_code)
 	isNew := selectedBusStop == nil
 	if isNew {
+		fmt.Printf("Bus Stop not found [stop_code: %d]. Create New.", input.Stop_code)
 		input.Id = oasaSyncDb.SequenceGetNextVal(oasaSyncModel.BUSSTOP_SEQ)
 		//input.Line_descr = input.Line_descr + " New"
 		r := oasaSyncDb.DB.Table("BUSSTOP").Create(&input)
@@ -34,6 +34,7 @@ func Save(input oasaSyncModel.BusStop) {
 		}
 
 	} else {
+		fmt.Printf("Bus Stop [stop_code: %d]. Updated.", input.Stop_code)
 		input.Id = selectedBusStop.Id
 		//input.Line_descr = input.Line_descr + " Update"
 		r := oasaSyncDb.DB.Table("BUSSTOP").Save(&input)
