@@ -1,7 +1,7 @@
 package oasaSyncModel
 
 type BusRoute struct {
-	Id              int64   `gorm:"PrimaryKey"`
+	Id              int64   `json:"Id" gorm:"PrimaryKey"`
 	Route_code      int32   `json:"RouteCode"`
 	Line_code       int32   `json:"LineCode"`
 	Route_descr     string  `json:"RouteDescr"`

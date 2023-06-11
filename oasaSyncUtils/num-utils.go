@@ -40,3 +40,6 @@ func stringToFloatInternal(input string, bitSize int) float64 {
 func StrToFloat(input interface{}) float64 {
 	return stringToFloatInternal(input.(string), 64)
 }
+func StrToFloat32(input interface{}) float32 {
+	return float32(stringToFloatInternal(input.(string), 32))
+}

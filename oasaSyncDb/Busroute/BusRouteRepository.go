@@ -59,3 +59,19 @@ func Save(input oasaSyncModel.BusRoute) {
 	}
 
 }
+
+func BusRouteList01() []oasaSyncModel.BusRoute {
+	var result []oasaSyncModel.BusRoute
+	r := oasaSyncDb.DB.Table("BUSROUTE").Order("route_code").Find(&result)
+	if r != nil {
+		if r.Error != nil {
+			fmt.Println(r.Error.Error())
+			return nil
+		}
+		if r.RowsAffected == 0 {
+			fmt.Println("Record does not exist!!!")
+			return nil
+		}
+	}
+	return result
+}

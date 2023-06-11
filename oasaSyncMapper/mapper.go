@@ -1,10 +1,9 @@
 package oasaSyncMapper
 
 import (
+	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncUtils"
 	"reflect"
-
-	oasaSyncModel "github.com/oulisnikos/oasaPlugin/oasaSyncModel"
-	oasa_sync_utils "github.com/oulisnikos/oasaPlugin/oasaSyncUtils"
 )
 
 func internal_mapper(source map[string]interface{}, target interface{}) {
@@ -24,21 +23,25 @@ func internal_mapper(source map[string]interface{}, target interface{}) {
 		if len(tag) != 0 {
 			// v.Set(reflect.ValueOf(source[tag]))
 			sourceFieldVal := source[tag]
-			switch fieldType {
-			case reflect.String:
-				v.SetString(sourceFieldVal.(string))
-			case reflect.Int64:
-				v.Set(reflect.ValueOf(oasa_sync_utils.StrToInt64(sourceFieldVal)))
-			case reflect.Int32:
-				v.Set(reflect.ValueOf(oasa_sync_utils.StrToInt32(sourceFieldVal)))
-			case reflect.Int16:
-				v.Set(reflect.ValueOf(oasa_sync_utils.StrToInt16(sourceFieldVal)))
-			case reflect.Int8:
-				v.Set(reflect.ValueOf(oasa_sync_utils.StrToInt8(sourceFieldVal)))
-			case reflect.Float64:
-				v.Set(reflect.ValueOf(oasa_sync_utils.StrToFloat(sourceFieldVal)))
-			case reflect.Ptr:
-				v.Set(reflect.ValueOf(nil))
+			if sourceFieldVal != nil {
+				switch fieldType {
+				case reflect.String:
+					v.SetString(sourceFieldVal.(string))
+				case reflect.Int64:
+					v.Set(reflect.ValueOf(oasaSyncUtils.StrToInt64(sourceFieldVal)))
+				case reflect.Int32:
+					v.Set(reflect.ValueOf(oasaSyncUtils.StrToInt32(sourceFieldVal)))
+				case reflect.Int16:
+					v.Set(reflect.ValueOf(oasaSyncUtils.StrToInt16(sourceFieldVal)))
+				case reflect.Int8:
+					v.Set(reflect.ValueOf(oasaSyncUtils.StrToInt8(sourceFieldVal)))
+				case reflect.Float32:
+					v.Set(reflect.ValueOf(oasaSyncUtils.StrToFloat32(sourceFieldVal)))
+				case reflect.Float64:
+					v.Set(reflect.ValueOf(oasaSyncUtils.StrToFloat(sourceFieldVal)))
+				case reflect.Ptr:
+					v.Set(reflect.ValueOf(nil))
+				}
 			}
 		}
 	}
@@ -56,4 +59,10 @@ func BusRouteMapper(source map[string]interface{}) oasaSyncModel.BusRoute {
 	internal_mapper(source, &busRouteOb)
 
 	return busRouteOb
+}
+
+func BusStopMapper(source map[string]interface{}) oasaSyncModel.BusStop {
+	var busStopOb oasaSyncModel.BusStop
+	internal_mapper(source, &busStopOb)
+	return busStopOb
 }
