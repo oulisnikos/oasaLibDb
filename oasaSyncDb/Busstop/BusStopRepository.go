@@ -29,6 +29,7 @@ func Save(input oasaSyncModel.BusStop) {
 		logger.INFO(fmt.Sprintf("Bus Stop not found [stop_code: %d]. Create New.\n", input.Stop_code))
 		input.Id = oasaSyncDb.SequenceGetNextVal(oasaSyncModel.BUSSTOP_SEQ)
 		//input.Line_descr = input.Line_descr + " New"
+
 		r := oasaSyncDb.DB.Table("BUSSTOP").Create(&input)
 		if r.Error != nil {
 			fmt.Println(r.Error.Error())
