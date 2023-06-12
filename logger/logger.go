@@ -15,7 +15,8 @@ var Logger *logrus.Logger
 
 func InitLogger(applicationName string) {
 	Logger = logrus.New()
-	err := os.Mkdir(rootLogsDirpath, 0777)
+	directoryPath := path.Join(rootLogsDirpath, applicationName)
+	err := os.Mkdir(directoryPath, 0777)
 	if err != nil {
 		fmt.Printf("error create directory file: %v\n", err)
 	}
