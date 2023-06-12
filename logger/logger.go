@@ -32,3 +32,8 @@ func InitLogger(applicationName string) {
 func INFO(str string) {
 	Logger.Println(str)
 }
+
+func ERROR(str string) {
+	Logger.SetLevel(logrus.ErrorLevel)
+	Logger.Println(str)
+}
