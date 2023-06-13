@@ -7,6 +7,8 @@ import (
 	"reflect"
 )
 
+// With this Mapper map the records from the Oasa Server to structures that we have defined
+// to implement procedures for the needs of the application
 func internal_mapper(source map[string]interface{}, target interface{}) {
 	rvTarget := reflect.ValueOf(target)
 	trvTarget := reflect.TypeOf(target)
@@ -48,6 +50,28 @@ func internal_mapper(source map[string]interface{}, target interface{}) {
 	}
 }
 
+// Function to Map structures from one to another with same field data types
+// but one of them has less fields from the other
+func structMapper(source interface{}, target interface{}) {
+	sourceMap := structs.Map(source)
+	rvTarget := reflect.ValueOf(target)
+	trvTarget := reflect.TypeOf(target)
+
+	if rvTarget.Kind() == reflect.Pointer {
+		rvTarget = rvTarget.Elem()
+		trvTarget = trvTarget.Elem()
+		target = reflect.New(rvTarget.Type())
+	}
+	for i := 0; i < rvTarget.NumField(); i++ {
+		v := rvTarget.Field(i)
+		// v.Set(reflect.ValueOf(source[tag]))
+		sourceFieldVal := sourceMap[trvTarget.Field(i).Name]
+		if sourceFieldVal != nil {
+			v.Set(reflect.ValueOf(sourceFieldVal))
+		}
+	}
+}
+
 func BussLineMapper(source map[string]interface{}) oasaSyncModel.Busline {
 	var busLineOb oasaSyncModel.Busline
 	internal_mapper(source, &busLineOb)
@@ -70,6 +94,6 @@ func BusStopDtoMapper(source map[string]interface{}) oasaSyncModel.BusStopDto {
 
 func BusStopDtoToBusStop(source oasaSyncModel.BusStopDto) oasaSyncModel.BusStop {
 	var busStop oasaSyncModel.BusStop
-	internal_mapper(structs.Map(source), busStop)
+	structMapper(source, &busStop)
 	return busStop
 }

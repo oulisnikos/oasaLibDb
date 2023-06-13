@@ -215,8 +215,8 @@ func GetBusRoutes(lined_id int32) ([]oasaSyncModel.BusRoute, *oasaSyncWeb.OasaEr
 	return result, nil
 }
 
-func GetBusStops(route_code int32) ([]oasaSyncModel.BusStop, *oasaSyncWeb.OasaError) {
-	var result []oasaSyncModel.BusStop
+func GetBusStops(route_code int32) ([]oasaSyncModel.BusStopDto, *oasaSyncWeb.OasaError) {
+	var result []oasaSyncModel.BusStopDto
 	response := oasaSyncWeb.OasaRequestApi("webGetStops", map[string]interface{}{"p1": route_code})
 	if response.Error != nil {
 		return nil, response.Error
@@ -224,7 +224,7 @@ func GetBusStops(route_code int32) ([]oasaSyncModel.BusStop, *oasaSyncWeb.OasaEr
 
 	for _, record := range response.Data.([]interface{}) {
 		// fmt.Println("at Index Route ", index)
-		result = append(result, oasaSyncMapper.BusStopMapper(record.(map[string]interface{})))
+		result = append(result, oasaSyncMapper.BusStopDtoMapper(record.(map[string]interface{})))
 	}
 	fmt.Printf("Routes results %d \n", len(result))
 
