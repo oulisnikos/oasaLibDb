@@ -1,6 +1,7 @@
 package oasaSyncMapper
 
 import (
+	"github.com/fatih/structs"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncUtils"
 	"reflect"
@@ -61,8 +62,14 @@ func BusRouteMapper(source map[string]interface{}) oasaSyncModel.BusRoute {
 	return busRouteOb
 }
 
-func BusStopMapper(source map[string]interface{}) oasaSyncModel.BusStop {
-	var busStopOb oasaSyncModel.BusStop
+func BusStopDtoMapper(source map[string]interface{}) oasaSyncModel.BusStopDto {
+	var busStopOb oasaSyncModel.BusStopDto
 	internal_mapper(source, &busStopOb)
 	return busStopOb
+}
+
+func BusStopDtoToBusStop(source oasaSyncModel.BusStopDto) oasaSyncModel.BusStop {
+	var busStop oasaSyncModel.BusStop
+	internal_mapper(structs.Map(source), busStop)
+	return busStop
 }

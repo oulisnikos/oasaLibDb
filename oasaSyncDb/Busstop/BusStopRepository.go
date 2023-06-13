@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/oulisnikos/oasaLibDb/logger"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncDb"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncMapper"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
 )
 
@@ -22,27 +23,27 @@ func SelectByStopCode(stopCode int64) *oasaSyncModel.BusStop {
 	return &selectedVal
 }
 
-func Save(input oasaSyncModel.BusStop) {
-	selectedBusStop := SelectByStopCode(input.Stop_code)
+func Save(busStopDto oasaSyncModel.BusStopDto) {
+	busStop := oasaSyncMapper.BusStopDtoToBusStop(busStopDto)
+	selectedBusStop := SelectByStopCode(busStop.Stop_code)
 	isNew := selectedBusStop == nil
 	if isNew {
-		logger.INFO(fmt.Sprintf("Bus Stop not found [stop_code: %d]. Create New.\n", input.Stop_code))
-		input.Id = oasaSyncDb.SequenceGetNextVal(oasaSyncModel.BUSSTOP_SEQ)
+		logger.INFO(fmt.Sprintf("Bus Stop not found [stop_code: %d]. Create New.\n", busStop.Stop_code))
+		busStop.Id = oasaSyncDb.SequenceGetNextVal(oasaSyncModel.BUSSTOP_SEQ)
 		//input.Line_descr = input.Line_descr + " New"
 
-		r := oasaSyncDb.DB.Table("BUSSTOP").Create(&input)
+		r := oasaSyncDb.DB.Table("BUSSTOP").Create(&busStop)
 		if r.Error != nil {
 			fmt.Println(r.Error.Error())
 		}
 
 	} else {
-		logger.INFO(fmt.Sprintf("Bus Stop [stop_code: %d]. Updated.\n", input.Stop_code))
-		input.Id = selectedBusStop.Id
+		logger.INFO(fmt.Sprintf("Bus Stop [stop_code: %d]. Updated.\n", busStop.Stop_code))
+		busStop.Id = selectedBusStop.Id
 		//input.Line_descr = input.Line_descr + " Update"
-		r := oasaSyncDb.DB.Table("BUSSTOP").Save(&input)
+		r := oasaSyncDb.DB.Table("BUSSTOP").Save(&busStop)
 		if r.Error != nil {
 			fmt.Println(r.Error.Error())
 		}
 	}
-
 }
