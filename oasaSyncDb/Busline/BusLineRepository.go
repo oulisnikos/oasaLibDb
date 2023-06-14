@@ -54,7 +54,7 @@ func SaveBusLine(input oasaSyncModel.Busline) {
 
 func BuslineList01() []oasaSyncModel.Busline {
 	var result []oasaSyncModel.Busline
-	r := oasaSyncDb.DB.Table("BUSLINE").Order("line_id").Find(&result)
+	r := oasaSyncDb.DB.Table("BUSLINE").Order("line_id, line_code").Find(&result)
 	if r != nil {
 		if r.Error != nil {
 			fmt.Println(r.Error.Error())
