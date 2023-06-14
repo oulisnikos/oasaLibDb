@@ -45,3 +45,17 @@ func Save(busStop oasaSyncModel.BusStop) {
 		}
 	}
 }
+
+func StopList01(routeCode int32) []oasaSyncModel.StopDto {
+	var result []oasaSyncModel.StopDto
+	r := oasaSyncDb.DB.Table("BUSSTOP").
+		Select("BUSSTOP.*, "+
+			"BUSROUTESTOPS.senu").
+		Joins("LEFT JOIN BUSROUTESTOPS ON BUSSTOP.stop_code=BUSROUTESTOPS.stop_code").
+		Where("BUSROUTESTOPS.route_code=?", routeCode).Order("senu").Find(&result)
+	if r.Error != nil {
+		logger.ERROR(r.Error.Error())
+		return nil
+	}
+	return result
+}
