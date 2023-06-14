@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/oulisnikos/oasaLibDb/logger"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncDb"
-	"github.com/oulisnikos/oasaLibDb/oasaSyncMapper"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
 )
 
@@ -23,8 +22,7 @@ func SelectByStopCode(stopCode int64) *oasaSyncModel.BusStop {
 	return &selectedVal
 }
 
-func Save(busStopDto oasaSyncModel.BusStopDto) {
-	busStop := oasaSyncMapper.BusStopDtoToBusStop(busStopDto)
+func Save(busStop oasaSyncModel.BusStop) {
 	selectedBusStop := SelectByStopCode(busStop.Stop_code)
 	isNew := selectedBusStop == nil
 	if isNew {
@@ -38,7 +36,7 @@ func Save(busStopDto oasaSyncModel.BusStopDto) {
 		}
 
 	} else {
-		logger.INFO(fmt.Sprintf("Bus Stop [stop_code: %d]. Updated.\n", busStop.Stop_code))
+		logger.INFO(fmt.Sprintf("Bus Stop [stop_code: %d]. Updated.\n", busStop))
 		busStop.Id = selectedBusStop.Id
 		//input.Line_descr = input.Line_descr + " Update"
 		r := oasaSyncDb.DB.Table("BUSSTOP").Save(&busStop)
