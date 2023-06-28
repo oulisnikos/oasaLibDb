@@ -1,8 +1,23 @@
 package main
 
+import (
+	"fmt"
+
+	"github.com/oulisnikos/oasaLibDb/logger"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncDb"
+	"github.com/oulisnikos/oasaLibDb/oasaSyncDb/Busstop"
+)
+
 func main() {
-	//oasaSyncDb.IntializeDb("user1", "user1password", nil, nil, "oasaDb")
-	//logger.InitLogger("oasaLibDb")
+	datasource := oasaSyncDb.DataSource{
+		Address:      nil,
+		Port:         nil,
+		User:         "user1",
+		Password:     "user1password",
+		DatabaseName: "oasaDb",
+	}
+	oasaSyncDb.IntializeDb(datasource)
+	logger.InitLogger("oasaLibDb")
 	//routeStops, error := oasaSyncApi.GetBusStops(4198)
 	//if error != nil {
 	//	fmt.Println("Error Occured on Server Request!!")
@@ -13,4 +28,6 @@ func main() {
 	//Busstop.Save(busStop)
 	////selected := Busstop.SelectByStopCode(10153)
 	////fmt.Println(selected)
+	result := Busstop.StopList01(4198)
+	fmt.Println(result)
 }
