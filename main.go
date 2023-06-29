@@ -9,14 +9,7 @@ import (
 )
 
 func main() {
-	datasource := oasaSyncDb.DataSource{
-		Address:      nil,
-		Port:         nil,
-		User:         "user1",
-		Password:     "user1password",
-		DatabaseName: "oasaDb",
-	}
-	oasaSyncDb.IntializeDb(datasource)
+	oasaSyncDb.IntializeDb()
 	logger.InitLogger("oasaLibDb")
 	//routeStops, error := oasaSyncApi.GetBusStops(4198)
 	//if error != nil {
