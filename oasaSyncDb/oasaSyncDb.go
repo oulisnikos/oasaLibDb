@@ -2,9 +2,12 @@ package oasaSyncDb
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -17,29 +20,63 @@ type DataSource struct {
 	DatabaseName string
 }
 
-// This is core for DB
 const dataSourceFormat = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
+
+type DatasourceLink interface {
+	DatasourceUrl() (string, error)
+}
+
+func (ds DataSource) DatasourceUrl() string {
+	return fmt.Sprintf(dataSourceFormat, ds.User, ds.Password,
+		*ds.Address, *ds.Port, ds.DatabaseName)
+
+}
+
+func getDataSource() (*DataSource, error) {
+	err := godotenv.Load()
+	if err != nil {
+		return nil, err
+	}
+	var ip = os.Getenv("database.ip")
+	port, err := strconv.ParseInt(os.Getenv("database.port"), 10, 32)
+	if err != nil {
+		return nil, err
+	}
+	var port32 = int32(port)
+	return &DataSource{
+		Address:      &ip,
+		Port:         &port32,
+		User:         "user1",
+		Password:     "user1password",
+		DatabaseName: "oasaDb",
+	}, nil
+}
+
+// This is core for DB
 
 var DB *gorm.DB
 
-func IntializeDb(datasource DataSource) error {
+func IntializeDb() error {
+	dataSource, err := getDataSource()
+	if err != nil {
+		return err
+	}
 	var defaultIp = "127.0.0.1"
 	var defaultPort int32 = 3306
-	if datasource.Address == nil {
-		datasource.Address = &defaultIp
+	if dataSource.Address == nil {
+		dataSource.Address = &defaultIp
 	}
-	if datasource.Port == nil {
-		datasource.Port = &defaultPort
+	if dataSource.Port == nil {
+		dataSource.Port = &defaultPort
 	}
 
 	dialector := mysql.New(mysql.Config{
-		DSN: fmt.Sprintf(dataSourceFormat, datasource.User, datasource.Password,
-			*datasource.Address, *datasource.Port, datasource.DatabaseName), // data source name
-		DefaultStringSize:         256,   // default size for string fields
-		DisableDatetimePrecision:  true,  // disable datetime precision, which not supported before MySQL 5.6
-		DontSupportRenameIndex:    true,  // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
-		DontSupportRenameColumn:   true,  // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-		SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+		DSN:                       dataSource.DatasourceUrl(), // data source name
+		DefaultStringSize:         256,                        // default size for string fields
+		DisableDatetimePrecision:  true,                       // disable datetime precision, which not supported before MySQL 5.6
+		DontSupportRenameIndex:    true,                       // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
+		DontSupportRenameColumn:   true,                       // `change` when rename column, rename column not supported before MySQL 8, MariaDB
+		SkipInitializeWithVersion: false,                      // auto configure based on currently MySQL version
 	})
 	database, err := gorm.Open(dialector, &gorm.Config{})
 
