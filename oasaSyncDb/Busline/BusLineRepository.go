@@ -88,3 +88,20 @@ func BuslineList01Distinct() ([]oasaSyncModel.Busline, error) {
 	}
 	return result, nil
 }
+
+func BuslineListBymlcode(mlcode int16) ([]oasaSyncModel.Busline, error) {
+	var result []oasaSyncModel.Busline
+	r := oasaSyncDb.DB.Table("BUSLINE").Where("ml_code = ?", mlcode).Order("line_id, line_code").Find(&result)
+	if r != nil {
+		if r.Error != nil {
+			fmt.Println(r.Error.Error())
+			return nil, r.Error
+		}
+		//if r.RowsAffected == 0 {
+		//	fmt.Println("Record does not exist!!!")
+		//	return nil
+		//}
+	}
+	return result, nil
+
+}
