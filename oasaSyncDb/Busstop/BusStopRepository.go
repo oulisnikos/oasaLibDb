@@ -2,6 +2,7 @@ package Busstop
 
 import (
 	"fmt"
+
 	"github.com/oulisnikos/oasaLibDb/logger"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncDb"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"

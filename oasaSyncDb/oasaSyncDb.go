@@ -7,7 +7,7 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/oulisnikos/oasaLibDb/logger"
+	logger "github.com/oulisnikos/oasaLibDb/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -78,6 +78,18 @@ func IntializeDb() error {
 		DontSupportRenameColumn:   true,                       // `change` when rename column, rename column not supported before MySQL 8, MariaDB
 		SkipInitializeWithVersion: false,                      // auto configure based on currently MySQL version
 	})
+
+	// newLogger := logger.New(
+	// 	log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+	// 	logger.Config{
+	// 		SlowThreshold: time.Second, // Slow SQL threshold
+	// 		LogLevel:      logger.Info, // Log level
+	// 		// IgnoreRecordNotFoundError: true,         // Ignore ErrRecordNotFound error for logger
+	// 		ParameterizedQueries: true, // Don't include params in the SQL log
+	// 		Colorful:             true, // Disable color
+	// 	},
+	// )
+
 	database, err := gorm.Open(dialector, &gorm.Config{
 		Logger: logger.GetGormLogger(),
 	})
