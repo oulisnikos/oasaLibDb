@@ -7,7 +7,7 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
+	"github.com/oulisnikos/oasaLibDb/logger"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -33,10 +33,10 @@ func (ds DataSource) DatasourceUrl() string {
 }
 
 func getDataSource() (*DataSource, error) {
-	err := godotenv.Load()
-	if err != nil {
-		return nil, err
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	return nil, err
+	// }
 	var ip = os.Getenv("database.ip")
 	port, err := strconv.ParseInt(os.Getenv("database.port"), 10, 32)
 	if err != nil {
@@ -78,13 +78,14 @@ func IntializeDb() error {
 		DontSupportRenameColumn:   true,                       // `change` when rename column, rename column not supported before MySQL 8, MariaDB
 		SkipInitializeWithVersion: false,                      // auto configure based on currently MySQL version
 	})
-	database, err := gorm.Open(dialector, &gorm.Config{})
+	database, err := gorm.Open(dialector, &gorm.Config{
+		Logger: logger.GetGormLogger(),
+	})
 
 	if err != nil {
 		// fmt.Println("An Error occured on creation of database connection")
 		return err
 	}
-	fmt.Println("Singlenton created succefully!!!!")
 
 	sqlDb, err := database.DB()
 	if err != nil {
