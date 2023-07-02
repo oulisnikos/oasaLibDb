@@ -66,7 +66,7 @@ func StopList01Error(routeCode int32) ([]oasaSyncModel.StopDto, error) {
 	r := oasaSyncDb.DB.Table("BUSSTOP").
 		Select("BUSSTOP.*, "+
 			"BUSROUTESTOPS.senu").
-		Joins("LEFT JOIN BUSROUTESTOPS ON BUSSTOP.stop_code=BUSROUTESTOPS.stop_code").
+		Joins("LEFT JOIN BUSROUTESTOPSS ON BUSSTOP.stop_code=BUSROUTESTOPS.stop_code").
 		Where("BUSROUTESTOPS.route_code=?", routeCode).Order("senu").Find(&result)
 	if r.Error != nil {
 		logger.ERROR(r.Error.Error())
