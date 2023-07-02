@@ -60,7 +60,7 @@ func (l *GormLogger) LogMode(level gormlogger.LogLevel) gormlogger.Interface {
 // Info prints info
 func (l GormLogger) Info(ctx context.Context, str string, args ...interface{}) {
 	if l.LogLevel >= gormlogger.Info {
-		Logger.Debugf(str, args...)
+		Logger.Infof(str, args...)
 	}
 }
 
@@ -106,6 +106,6 @@ func (l GormLogger) Trace(ctx context.Context, begin time.Time, fc func() (strin
 
 func GetGormLogger() *GormLogger {
 	return &GormLogger{
-		LogLevel: gormlogger.Error,
+		LogLevel: gormlogger.Info,
 	}
 }
