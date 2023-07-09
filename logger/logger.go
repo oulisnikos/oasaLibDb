@@ -156,6 +156,6 @@ func (l GormLogger) Trace(ctx context.Context, begin time.Time, fc func() (strin
 
 func GetGormLogger() *GormLogger {
 	return &GormLogger{
-		LogLevel: gormlogger.Info,
+		LogLevel: gormlogger.Error,
 	}
 }
