@@ -14,11 +14,11 @@ type BusScheduleMasterLineDto struct {
 // }
 
 type BusScheduleMasterLine struct {
-	Id            int32  `json: id`
+	Id            int64  `json: id`
 	Sdc_descr     string `json: sdc_descr`
 	Sdc_descr_eng string `json: sdc_descr_eng`
 	Sdc_code      int16  `json: sdc_code`
-	Line_code     int32  `json:Line_code`
+	Line_code     int32  `json: line_code`
 }
 
 type BusSheduleLine struct {
