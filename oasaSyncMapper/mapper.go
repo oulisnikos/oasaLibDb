@@ -1,10 +1,11 @@
 package oasaSyncMapper
 
 import (
+	"reflect"
+
 	"github.com/fatih/structs"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncUtils"
-	"reflect"
 )
 
 // With this Mapper map the records from the Oasa Server to structures that we have defined
@@ -96,4 +97,16 @@ func BusStopDtoToBusStop(source oasaSyncModel.BusStopDto) oasaSyncModel.BusStop 
 	var busStop oasaSyncModel.BusStop
 	structMapper(source, &busStop)
 	return busStop
+}
+
+func SheduleMasterLineDtoMapper(source map[string]interface{}) oasaSyncModel.BusScheduleMasterLineDto {
+	var busSheduleMaster oasaSyncModel.BusScheduleMasterLineDto
+	internal_mapper(source, &busSheduleMaster)
+	return busSheduleMaster
+}
+
+func ScheduleMasterLineDtoToScheduleMasterLine(source oasaSyncModel.BusScheduleMasterLineDto) oasaSyncModel.BusScheduleMasterLine {
+	var result oasaSyncModel.BusScheduleMasterLine
+	structMapper(source, &result)
+	return result
 }

@@ -2,11 +2,12 @@ package oasaSyncApi
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/oulisnikos/oasaLibDb/oasaSyncDecode"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncMapper"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncModel"
 	"github.com/oulisnikos/oasaLibDb/oasaSyncWeb"
-	"os"
 )
 
 type apierror interface {
@@ -229,4 +230,21 @@ func GetBusStops(route_code int32) ([]oasaSyncModel.BusStopDto, *oasaSyncWeb.Oas
 	fmt.Printf("Routes results %d \n", len(result))
 
 	return result, nil
+}
+
+func GetBusScheduleMaster(line_code int32) ([]oasaSyncModel.BusScheduleMasterLineDto, *oasaSyncWeb.OasaError) {
+	var result []oasaSyncModel.BusScheduleMasterLineDto
+	response := oasaSyncWeb.OasaRequestApi("getScheduleDaysMasterline", map[string]interface{}{"p1": line_code})
+
+	if response.Error != nil {
+		return nil, response.Error
+	}
+
+	for _, record := range response.Data.([]interface{}) {
+		result = append(result, oasaSyncMapper.SheduleMasterLineDtoMapper(record.(map[string]interface{})))
+	}
+	fmt.Printf("Schedule Master Line  get successfully %d \n", len(result))
+
+	return result, nil
+
 }
